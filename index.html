@@ -1,7 +1,12 @@
-<!DOCTYPE html>
+<!-- index.html -->
+
 <html>
     <head>
         <title>Web Scraper</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width" />
+        <!-- include "css/style.css" -->
+        <link rel="stylesheet" href="style.css" />
     </head>
     <body>
         <h1>Data from Web Scraper</h1>
@@ -9,28 +14,12 @@
         <div id="data-container"></div>
 
         <script>
-            fetch("/")
-                .then((response) => response.json())
-                .then((data) => {
-                    const { date, product, price } = data;
+            const { date, product, price } = window.responseData;
 
-                    const container = document.getElementById("data-container");
-
-                    const dateElement = document.createElement("p");
-                    dateElement.textContent = `Daate: ${date}`;
-                    container.appendChild(dateElement);
-
-                    const productElement = document.createElement("p");
-                    productElement.textContent = `Product: ${product}`;
-                    container.appendChild(productElement);
-
-                    const priceElement = document.createElement("p");
-                    priceElement.textContent = `Price: ${price}`;
-                    container.appendChild(priceElement);
-                })
-                .catch((error) => {
-                    console.log("Error:", error);
-                });
+            const container = document.getElementById("Container");
+            const line = document.createElement("li");
+            line.textContent = `Date: ${date}, Product: ${product}, Price: ${price}`;
+            container.appendChild(line);
         </script>
     </body>
 </html>
