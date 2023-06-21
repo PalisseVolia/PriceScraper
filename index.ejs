@@ -10,11 +10,22 @@
     </head>
     <body>
         <h1>Data from Web Scraper</h1>
+        <div>
+            <button onclick="AddProduct()">Add new</button>
+            <input type="text" id="name" name="name" size="10" />
+            <input type="url" id="url" name="url" size="10" />
+        </div>
         <ul id="Container"></ul>
         <div id="data-container"></div>
 
-        <script src="scripts.js"></script>
         <script>
+            const date = "<%= date %>";
+            const product = "<%= product %>";
+            const price = "<%= price %>";
+        </script>
+        <script src="scripts.js"></script>
+
+        <!-- <script>
             const date = "<%= date %>";
             const product = "<%= product %>";
             const price = "<%= price %>";
@@ -23,6 +34,6 @@
             const line = document.createElement("li");
             line.textContent = `Date: ${date}, Product: ${product}, Price: ${price}`;
             container.appendChild(line);
-        </script>
+        </script> -->
     </body>
 </html>
