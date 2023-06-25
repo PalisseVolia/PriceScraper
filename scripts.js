@@ -1,4 +1,5 @@
 // TODO: probably temp, will be removed later
+// TEMP: ETAPE 5 affichage des données via li
 document.addEventListener("DOMContentLoaded", function () {
     const container = document.getElementById("Container");
     const line = document.createElement("li");
@@ -7,6 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 // Ajout d'un produit TODO: ajouter erreurs à l'interface
+// TEMP: ETAPE 1 Ajout d'un produit via l'interface
 async function AddProduct() {
     const name = document.getElementById("name").value;
     const url = document.getElementById("url").value;
