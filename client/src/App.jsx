@@ -18,16 +18,23 @@ function App() {
     }, [])
 
     return (
-        <div>
-            <h1>React App</h1>
-            {(typeof backendData.users === 'undefined') ? (
-                <p>Loading...</p>
-            ) : (
-                backendData.users.map((user, index) => (
-                    <p key={index}>{user}</p>
-                ))
-            )}
-        </div>
+        <>
+            <div>
+                <h1>React App</h1>
+                {(typeof backendData.users === 'undefined') ? (
+                    <p>Loading...</p>
+                ) : (
+                    backendData.users.map((user, index) => (
+                        <p key={index}>{user}</p>
+                    ))
+                )}
+            </div>
+            <div>
+                <button onclick="AddProduct()" >Add new</button>
+                <input type="text" id="name" name="name" size="10" />
+                <input type="url" id="url" name="url" size="10" />
+            </div>
+        </>
     );
 }
 
