@@ -33,7 +33,7 @@ async function scrapeProductData(browser, url, product) {
     const priceElement = await page.waitForSelector(".a-price-whole");
     const priceText = await page.evaluate((el) => el.textContent, priceElement);
 
-    page.close();
+    await page.close();
 
     return {
         O_date: getDate(),
@@ -46,81 +46,45 @@ async function scrapeProductData(browser, url, product) {
 async function MainWebScraperExperimental() {
     const jsonDataArray = JSON.parse(fs.readFileSync("rawData.json", "utf8"));
 
-    const browser = await puppeteer.launch({
-        headless: "new",
-        args: ["--blink-settings=imagesEnabled=false"],
+    const browserPool = createPool({
+        create: async () => {
+            return puppeteer.launch({
+                headless: "new",
+                args: ["--blink-settings=imagesEnabled=false"],
+            });
+        },
+        destroy: async (browser) => {
+            await browser.close();
+        },
     });
 
-    // Limit the number of concurrent requests to 5
-    const maxConcurrentRequests = 5;
+    const maxConcurrentRequests = 8;
     const dataPromises = [];
+    let j = 0;
 
     for (let i = 0; i < jsonDataArray.length; i++) {
         const { url, name } = jsonDataArray[i];
 
+        // Acquire a browser instance from the pool
+        const browser = await browserPool.acquire();
+
         // Scrape each product and store the promise in an array
         dataPromises.push(scrapeProductData(browser, url, name));
 
-        // Limit concurrent requests based on the maximum allowed
-        if (dataPromises.length >= maxConcurrentRequests) {
-            await Promise.all(dataPromises);
-            dataPromises.length = 0; // Clear the array
+        // counter
+        j += 1;
+
+        // Release the browser instance back to the pool
+        if (j >= maxConcurrentRequests) {
+            await Promise.all(dataPromises); // Wait for the promises to resolve
+            j = 0;
         }
+        browserPool.release(browser);
     }
 
     // Wait for the remaining promises to resolve
     const scrapedData = await Promise.all(dataPromises);
-
-    await browser.close();
+    await browserPool.clear();
 
     return scrapedData;
 }
-
-// // Main web scraper
-// async function MainWebScraperExperimental() {
-//     let I_url = "";
-//     let I_product = "";
-//     let DATA = [];
-
-//     // launch browser
-//     const browser = await puppeteer.launch({
-//         headless: "new", // Run Puppeteer in headless mode
-//         args: ["--blink-settings=imagesEnabled=false"], // Disable image loading
-//     });
-//     const page = await browser.newPage();
-
-//     // read json file with products
-//     const jsonDataArray = JSON.parse(fs.readFileSync("rawData.json", "utf8"));
-
-//     // for each product in json file
-//     for (let i = 0; i < jsonDataArray.length; i++) {
-//         I_url = jsonDataArray[i].url;
-//         I_product = jsonDataArray[i].name;
-
-//         // depending on the marketplace
-//         if (I_url.includes("amazon")) {
-//             // scrape data
-//             await page.goto(I_url, { waitUntil: "domcontentloaded" }, { timeout: 60000 }); // Set timeout to 60 seconds
-//             var price = await page.waitForSelector(".a-price-whole");
-//             var priceText = await page.evaluate((price) => price.textContent, price);
-
-//             // create object & add to array
-//             let data2 = {
-//                 O_date: getDate(),
-//                 O_product: I_product,
-//                 O_price: priceText,
-//                 O_url: I_url,
-//             };
-//             DATA.push(data2);
-//         }
-//         if (I_url.includes("cdiscount")) {
-//         }
-//         if (I_url.includes("google")) {
-//         }
-//     }
-
-//     browser.close();
-
-//     // return array with all data
-//     return DATA;
-// }
