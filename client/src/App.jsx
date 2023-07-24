@@ -3,6 +3,8 @@ import { useEffect } from "react";
 import { useState } from "react";
 import './App.css'
 
+import NavbarTemp from "./components/NavbarTemp";
+
 function App() {
 
     const [backendData, setBackendData] = useState([{}])
@@ -36,6 +38,7 @@ function App() {
                 <input type="text" id="name" name="name" size="10" />
                 <input type="url" id="url" name="url" size="10" />
             </div>
+            <NavbarTemp></NavbarTemp>
         </>
     );
 }
