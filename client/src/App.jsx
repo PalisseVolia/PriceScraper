@@ -3,10 +3,13 @@ import { useEffect } from "react";
 import { useState } from "react";
 import './App.css'
 
+import NavbarTemp from "./components/NavbarTemp";
+
 function App() {
 
     const [backendData, setBackendData] = useState([{}])
 
+    // fetch data from backend api
     useEffect(() => {
         fetch("/api").then(
             response => response.json()
@@ -21,6 +24,7 @@ function App() {
         <>
             <div>
                 <h1>React App</h1>
+                {/* Display loading until data received */}
                 {(typeof backendData.users === 'undefined') ? (
                     <p>Loading...</p>
                 ) : (
@@ -34,6 +38,7 @@ function App() {
                 <input type="text" id="name" name="name" size="10" />
                 <input type="url" id="url" name="url" size="10" />
             </div>
+            <NavbarTemp></NavbarTemp>
         </>
     );
 }

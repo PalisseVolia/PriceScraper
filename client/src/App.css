@@ -1,3 +1,26 @@
+/* TEMP CSS */
 body {
     background-color: rgb(50, 50, 50);
+}
+
+.NavbarTemp {
+    bottom: 0%;
+    position: absolute;
+    display: flex;
+    right: 0%;
+    font-size: x-large;
+}
+
+.NavbarTemp a {
+    color: white;
+    text-decoration: none;
+    padding: 14px 16px;
+    border-top: 5px solid;
+    border-left: 5px solid;
+    border-right: 5px solid transparent;
+}
+
+.NavbarTemp a:hover {
+    color: rgb(191, 80, 80);
+    border-right: 5px solid;
 }
