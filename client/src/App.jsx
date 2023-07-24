@@ -7,6 +7,7 @@ function App() {
 
     const [backendData, setBackendData] = useState([{}])
 
+    // fetch data from backend api
     useEffect(() => {
         fetch("/api").then(
             response => response.json()
@@ -21,6 +22,7 @@ function App() {
         <>
             <div>
                 <h1>React App</h1>
+                {/* Display loading until data received */}
                 {(typeof backendData.users === 'undefined') ? (
                     <p>Loading...</p>
                 ) : (

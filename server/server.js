@@ -6,6 +6,10 @@ const fs = require("fs");
 
 const app = express();
 
+// ====================
+// APIs
+// ====================
+
 app.get("/api", async (req, res) => {
     console.time("MainWebScraperExperimental");
     const DATA = await MainWebScraperExperimental();
@@ -14,12 +18,6 @@ app.get("/api", async (req, res) => {
 });
 
 app.listen(5000, () => console.log("Server running on port 5000"));
-
-function getDate() {
-    let date = new Date();
-    let fullDate = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
-    return fullDate;
-}
 
 // ====================
 // Web scrapers
@@ -35,6 +33,7 @@ async function scrapeProductData(browser, url, product) {
 
     await page.close();
 
+    // Return an object with the data
     return {
         O_date: getDate(),
         O_product: product,
@@ -44,6 +43,7 @@ async function scrapeProductData(browser, url, product) {
 }
 
 async function MainWebScraperExperimental() {
+    // TODO: replace with a database
     const jsonDataArray = JSON.parse(fs.readFileSync("rawData.json", "utf8"));
 
     const browserPool = createPool({
@@ -58,6 +58,7 @@ async function MainWebScraperExperimental() {
         },
     });
 
+    // choose how many concurrent browsers should be open at once (max 8)
     const maxConcurrentRequests = 8;
     const dataPromises = [];
     let j = 0;
@@ -87,4 +88,15 @@ async function MainWebScraperExperimental() {
     await browserPool.clear();
 
     return scrapedData;
+}
+
+// ====================
+// Utilities
+// ====================
+
+// Get the current date and time
+function getDate() {
+    let date = new Date();
+    let fullDate = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+    return fullDate;
 }
