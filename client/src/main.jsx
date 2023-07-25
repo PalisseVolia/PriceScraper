@@ -9,6 +9,7 @@ import {
     Route,
 } from "react-router-dom"
 
+// List different pages
 const Router = createBrowserRouter([
     {
         path: "/",
