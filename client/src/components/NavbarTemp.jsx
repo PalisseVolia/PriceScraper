@@ -4,7 +4,7 @@ import '../App.css'
 
 function NavbarTemp() {
     return (
-        <div class="NavbarTemp">
+        <div className="NavbarTemp">
             <Link to="/">Home</Link>
             <Link to="/Login">Login</Link>
         </div>
