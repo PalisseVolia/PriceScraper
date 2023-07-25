@@ -34,7 +34,7 @@ function App() {
                 )}
             </div>
             <div>
-                <button onclick="AddProduct()" >Add new</button>
+                <button>Add new</button>
                 <input type="text" id="name" name="name" size="10" />
                 <input type="url" id="url" name="url" size="10" />
             </div>
